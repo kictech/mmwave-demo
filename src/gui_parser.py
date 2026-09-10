@@ -41,12 +41,12 @@ class uartParser():
         # TODO Implement these
         elif (type == "Replay"):
             self.replay = 1
-        else: 
+        else:
             print ("ERROR, unsupported demo type selected!")
-        
+
         # Data storage
         self.now_time = datetime.datetime.now().strftime('%Y%m%d-%H%M')
-    
+
 
     def WriteFile(self, data):
         filepath=self.now_time + '.bin'
@@ -149,7 +149,7 @@ class uartParser():
     #             return self.replayHist()
     #         else:
     #             return -1
-        
+
 def getBit(byte, bitNum):
     mask = 1 << bitNum
     if (byte&mask):

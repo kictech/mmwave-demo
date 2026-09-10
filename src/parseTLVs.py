@@ -25,10 +25,10 @@ def sphericalToCartesianPointCloud(sphericalPointCloud):
 
     # Compute X
     # Range * sin (azimuth) * cos (elevation)
-    cartestianPointCloud[:,0] = sphericalPointCloud[:,0] * np.sin(sphericalPointCloud[:,1]) * np.cos(sphericalPointCloud[:,2]) 
+    cartestianPointCloud[:,0] = sphericalPointCloud[:,0] * np.sin(sphericalPointCloud[:,1]) * np.cos(sphericalPointCloud[:,2])
     # Compute Y
     # Range * cos (azimuth) * cos (elevation)
-    cartestianPointCloud[:,1] = sphericalPointCloud[:,0] * np.cos(sphericalPointCloud[:,1]) * np.cos(sphericalPointCloud[:,2]) 
+    cartestianPointCloud[:,1] = sphericalPointCloud[:,0] * np.cos(sphericalPointCloud[:,1]) * np.cos(sphericalPointCloud[:,2])
     # Compute Z
     # Range * sin (elevation)
     cartestianPointCloud[:,2] = sphericalPointCloud[:,0] * np.sin(sphericalPointCloud[:,2])
@@ -51,7 +51,7 @@ def parsePointCloudTLV(tlvData, tlvLength, pointCloud):
             print('Error: Point Cloud TLV Parser Failed')
             break
         tlvData = tlvData[pointStructSize:]
-        pointCloud[i,0] = x 
+        pointCloud[i,0] = x
         pointCloud[i,1] = y
         pointCloud[i,2] = z
         pointCloud[i,3] = doppler
@@ -73,7 +73,7 @@ def parseSideInfoTLV(tlvData, tlvLength, pointCloud):
         tlvData = tlvData[pointStructSize:]
         # SNR and Noise are sent as uint16_t which are measured in 0.1 dB Steps
         pointCloud[i,4] = snr * 0.1
-        pointCloud[i,5] = noise * 0.1 
+        pointCloud[i,5] = noise * 0.1
     return pointCloud
 
 # Occupancy state machine TLV from small obstacle detection
@@ -111,7 +111,7 @@ def parseSphericalPointCloudTLV(tlvData, tlvLength, pointCloud):
         pointCloud[i,1] = azimuth
         pointCloud[i,2] = elevation
         pointCloud[i,3] = doppler
-    
+
     # Convert from spherical to cartesian
     pointCloud[:,0:3] = sphericalToCartesianPointCloud(pointCloud[:, 0:3])
     return numPoints, pointCloud
@@ -142,7 +142,7 @@ def parseCompressedSphericalPointCloudTLV(tlvData, tlvLength, pointCloud):
             numPoints = i
             print('Error: Point Cloud TLV Parser Failed')
             break
-        
+
         tlvData = tlvData[pointSize:]
         if (azimuth >= 128):
             print ('Az greater than 127')
@@ -205,7 +205,7 @@ def parseTrackTLV(tlvData, tlvLength):
         targets[i,9] = targetData[9] # Z Acceleration
         targets[i,10] = targetData[26] # G
         targets[i,11] = targetData[27] # Confidence Level
-        
+
         # Throw away EC
         tlvData = tlvData[targetSize:]
 
@@ -249,7 +249,7 @@ def parseTargetIndexTLV(tlvData, tlvLength):
 def parseVitalSignsTLV (tlvData, tlvLength):
     vitalsStruct = '2H33f'
     vitalsSize = struct.calcsize(vitalsStruct)
-    
+
     # Initialize struct in case of error
     vitalsOutput = {}
     vitalsOutput ['id'] = 999
@@ -266,7 +266,7 @@ def parseVitalSignsTLV (tlvData, tlvLength):
     except:
         print('ERROR: Vitals TLV Parsing Failed')
         return vitalsOutput
-    
+
     # Parse this patient's data
     vitalsOutput ['id'] = vitalsData[0]
     vitalsOutput ['rangeBin'] = vitalsData[1]

@@ -22,11 +22,11 @@ from graphUtilities import *
 
 # ----- Defines -------------------------------------------------------
 # Configurables
-SNR_EXPECTED_MIN = 10 # Sets the min SNR we expect so that we can color points 
-SNR_EXPECTED_MAX = 30 # Sets the max SNR we expect so that we can color points 
-SNR_EXPECTED_RANGE = SNR_EXPECTED_MAX - SNR_EXPECTED_MIN # Sets the range we expect so that we can color points 
+SNR_EXPECTED_MIN = 10 # Sets the min SNR we expect so that we can color points
+SNR_EXPECTED_MAX = 30 # Sets the max SNR we expect so that we can color points
+SNR_EXPECTED_RANGE = SNR_EXPECTED_MAX - SNR_EXPECTED_MIN # Sets the range we expect so that we can color points
 DOPPLER_EXPECTED_MIN = -30 # Sets the min Doppler we expect so that we can color points
-DOPPLER_EXPECTED_MAX = 30 # Sets the max Doppler we expect so that we can color points 
+DOPPLER_EXPECTED_MAX = 30 # Sets the max Doppler we expect so that we can color points
 DOPPLER_EXPECTED_RANGE = DOPPLER_EXPECTED_MAX - DOPPLER_EXPECTED_MIN
 
 class parseUartThread(QThread):
@@ -85,7 +85,7 @@ class updateQTTargetThread3D(QThread):
         mesh = getBoxLinesCoords(x,y,z)
         track.setData(pos=mesh,color=trackColor,width=2,antialias=True,mode='lines')
         track.setVisible(True)
-        
+
 
     def run(self):
         # Clear all previous targets
@@ -99,10 +99,10 @@ class updateQTTargetThread3D(QThread):
         # Determine the size of each point based on its SNR
         with np.errstate(divide='ignore'):
             size = np.clip(np.log2(np.maximum(np.nan_to_num(self.pointCloud[:, 4]), 1.0)), 1.0, 20.0)
-        
+
         # Each color is an array of 4 values, so we need an numPoints*4 size 2d array to hold these values
         pointColors = np.zeros((self.pointCloud.shape[0], 4))
-       
+
        # Color the points by their SNR
         if (self.pointColorMode == COLOR_MODE_SNR):
             for i in range(self.pointCloud.shape[0]):
@@ -123,10 +123,10 @@ class updateQTTargetThread3D(QThread):
                 if (zs < self.zRange[0]) or (zs > self.zRange[1]):
                     pointColors[i] = pg.glColor('w')
                 else:
-                    colorRange = self.zRange[1]+abs(self.zRange[0]) 
-                    #zs = colorRange/2 + zs 
+                    colorRange = self.zRange[1]+abs(self.zRange[0])
+                    #zs = colorRange/2 + zs
                     #zs = self.zRange[0]-zs
-                    zs = self.zRange[1] - zs 
+                    zs = self.zRange[1] - zs
                     #print(zs)
                     #print(self.zRange[1]+abs(self.zRange[0]))
                     #print(zs/colorRange)
@@ -152,7 +152,7 @@ class updateQTTargetThread3D(QThread):
         else:
             for i in range(self.pointCloud.shape[0]):
                 pointColors[i]= pg.glColor('g')
-            
+
         self.scatter.setData(pos=toPlot, color=pointColors, size=size)
         # Graph the targets
         if (self.drawTracks):
@@ -225,7 +225,7 @@ class updateVSHeightGraphs(QThread):
                 'rangeidx0':[],'rangeidx1':[],'angleidx0':[],'angleidx1':[],'test':[]}
         #start by plotting height data, mean height, and delta height of first TID only
         #print(str(out))
-        
+
         out['wave0'] = self.vs[0,0]
         out['wave1'] = self.vs[0,1]
         out['heart0'] = self.vs[1,0]
@@ -278,7 +278,7 @@ class zeroHeightGraphs(QThread):
                 'rangeidx0':[],'rangeidx1':[],'angleidx0':[],'angleidx1':[],'test':[]}
         #start by plotting height data, mean height, and delta height of first TID only
         #print(str(out))
-        
+
         out['wave0'] = 0
         out['wave1'] = 0
         out['heart0'] = 0

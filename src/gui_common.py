@@ -6,7 +6,7 @@ DEMO_NAME_LRPD = 'Long Range People Detection'
 DEMO_NAME_MT = 'Mobile Tracker'
 DEMO_NAME_SOD = 'Small Obstacle Detection'
 
-# Different methods to color the points 
+# Different methods to color the points
 COLOR_MODE_SNR = 'SNR'
 COLOR_MODE_HEIGHT = 'Height'
 COLOR_MODE_DOPPLER = 'Doppler'

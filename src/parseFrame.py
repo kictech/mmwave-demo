@@ -54,7 +54,7 @@ def parseStandardFrame(frameData):
         print('Error: Could not read frame header')
         outputDict['error'] = 1
 
-    # Move frameData ptr to start of 1st TLV    
+    # Move frameData ptr to start of 1st TLV
     frameData = frameData[frameHeaderLen:]
 
     # Save frame number to output
@@ -82,7 +82,7 @@ def parseStandardFrame(frameData):
         # print ("Frame Data before tlv parse: ", frameData[:10])
 
         # Detected Points
-        if (tlvType == MMWDEMO_OUTPUT_MSG_DETECTED_POINTS): 
+        if (tlvType == MMWDEMO_OUTPUT_MSG_DETECTED_POINTS):
             outputDict['numDetectedPoints'], outputDict['pointCloud'] = parsePointCloudTLV(frameData[:tlvLength], tlvLength, outputDict['pointCloud'])
         # Range Profile
         elif (tlvType == MMWDEMO_OUTPUT_MSG_RANGE_PROFILE):
@@ -145,7 +145,7 @@ def parseStandardFrame(frameData):
 #     tlvHeaderLength = 8
 #     headerLength = 48
 #     headerStruct = 'Q9I2H'
-    
+
 #     outputDict = {}
 #     outputDict['error'] = 0
 
@@ -155,7 +155,7 @@ def parseStandardFrame(frameData):
 #         print('Error: Could not read frame header')
 #         outputDict['error'] = 1
 
-#     outputDict['frameNum'] = frameNum        
+#     outputDict['frameNum'] = frameNum
 #     frameData = frameData[headerLength:]
 #     # Check TLVs
 #     for i in range(numTLVs):
@@ -168,9 +168,9 @@ def parseStandardFrame(frameData):
 #         except:
 #             print('TLV Header Parsing Failure')
 #             outputDict['error'] = 2
-        
+
 #         # OOB Point Cloud
-#         if (tlvType == 1): 
+#         if (tlvType == 1):
 #             pass
 #         # Range Profile
 #         elif (tlvType == 2):
@@ -209,7 +209,7 @@ def parseStandardFrame(frameData):
 #             pass
 #         else:
 #             print ("Warning: invalid TLV type: %d" % (tlvType))
-        
+
 #         frameData = frameData[dataLength:]
 #     return outputDict
 
@@ -219,4 +219,3 @@ def parseStandardFrame(frameData):
 def tlvHeaderDecode(data):
     tlvType, tlvLength = struct.unpack('2I', data)
     return tlvType, tlvLength
-

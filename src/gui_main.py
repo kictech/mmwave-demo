@@ -71,12 +71,12 @@ def get_trackColors(n):
         (255, 216, 177, 255),   # Apricot
         (  0,   0, 117, 255)    # Navy
     ]
-    
+
     # Generate normalized version of Kelly colors
     modKellyColorsNorm = []
-    for tup in modKellyColors: 
+    for tup in modKellyColors:
         modKellyColorsNorm.append(tuple(ti/255 for ti in tup))
-    
+
     # Create the output color list
     trackColorList = []
     for i in range(n):
@@ -84,7 +84,7 @@ def get_trackColors(n):
         if i < len(modKellyColorsNorm):
             trackColorList.append(modKellyColorsNorm[i])
         # Otherwise, generate a color from the average of two randomly selected colors, and add the new color to the list
-        else:  
+        else:
             (r_2, g_2, b_2, _) = modKellyColorsNorm[random.randint(0,len(modKellyColorsNorm)-1)]
             (r_1, g_1, b_1, _) = modKellyColorsNorm[random.randint(0,len(modKellyColorsNorm)-1)]
             r_gen = (r_2 + r_1) / 2
@@ -168,7 +168,7 @@ class Window(QDialog):
             width = math.ceil(size.width()*0.9)
             height = math.ceil(size.height()*0.9)
             self.setGeometry(left, top, width, height)
-        
+
         # Persistent point cloud
         self.previousClouds = []
 
@@ -290,7 +290,7 @@ class Window(QDialog):
         self.start = QPushButton("Start without Send Configuration ")
         self.selectConfig.clicked.connect(self.selectCfg)
         self.sendConfig.clicked.connect(self.sendCfg)
-        self.start.clicked.connect(self.startApp)     
+        self.start.clicked.connect(self.startApp)
         self.configTable = QTableWidget(5,2)
         # Set parameter names
         self.configTable.setItem(0,0,QTableWidgetItem('Radar Parameter'))
@@ -303,7 +303,7 @@ class Window(QDialog):
         self.configLayout.addWidget(self.selectConfig)
         self.configLayout.addWidget(self.sendConfig)
         self.configLayout.addWidget(self.start)
-        self.configLayout.addWidget(self.configTable)       
+        self.configLayout.addWidget(self.configTable)
         #self.configLayout.addStretch(1)
         self.configBox.setLayout(self.configLayout)
 
@@ -338,7 +338,7 @@ class Window(QDialog):
     def setBoxControlLayout(self, name):
         # Set up one boundary box control
         boxControl = QGroupBox(name)
-        
+
         description = QLabel('')
         # Input boxes
         lx = QLineEdit('-6')
@@ -359,7 +359,7 @@ class Window(QDialog):
         color.addItem('Magenta', 'm')
         # color.addItem('Black', 'k')
         color.addItem('White', 'w')
-        
+
         boxConLayout = QGridLayout()
 
         boxConLayout.addWidget(QLabel('Description:'),0,0,1,1)
@@ -397,14 +397,14 @@ class Window(QDialog):
         self.elev_tilt = QLineEdit('0')
         self.s_height = QLineEdit(str(self.profile['sensorHeight']))
         self.spLayout = QGridLayout()
-        
+
         self.spLayout.addWidget(QLabel('Azimuth Tilt'),0,0,1,1)
         self.spLayout.addWidget(self.az_tilt,0,1,1,1)
         self.spLayout.addWidget(QLabel('Elevation Tilt'),1,0,1,1)
         self.spLayout.addWidget(self.elev_tilt,1,1,1,1)
         self.spLayout.addWidget(QLabel('Sensor Height'),2,0,1,1)
         self.spLayout.addWidget(self.s_height,2,1,1,1)
-        
+
         self.spBox = QGroupBox('Sensor Position')
         self.spBox.setLayout(self.spLayout)
         self.s_height.textEdited.connect(self.onChangeSensorPosition)
@@ -417,7 +417,7 @@ class Window(QDialog):
     def onChangeConfigType(self):
         newConfig = self.configType.currentText()
         print('Demo Changed to: ' + newConfig)
-        
+
         # First, undo any changes that the last demo made
         # These should be the inverse of the changes made in 2nd part of this function
 
@@ -453,8 +453,8 @@ class Window(QDialog):
 
             # Unlock sensor position config
             self.spBox.setDisabled(False)
-            
-        
+
+
         # Now, apply any specific GUI changes for the new demo
         # Configure for Out of Box
         if (newConfig == DEMO_NAME_OOB):
@@ -525,7 +525,7 @@ class Window(QDialog):
         self.boundaryBoxes = []
         self.boxTab = QTabWidget()
         self.addBoundBox('pointBounds')
-    
+
 
     # For live tuning when available
     def onChangeBoundaryBox(self):
@@ -549,7 +549,7 @@ class Window(QDialog):
             # Update visibility
             if (box['checkEnable'].isChecked()):
                 self.boundaryBoxViz[index].setVisible(True)
-                
+
             else:
                 self.boundaryBoxViz[index].setVisible(False)
             index = index + 1
@@ -563,7 +563,7 @@ class Window(QDialog):
         for i in range(MAX_VITALS_PATIENTS):
             patientDict = {}
             patientName = 'Patient' + str(i+1)
-            
+
             # Initialize the pane and layout
             patientPane = QGroupBox(patientName)
             patientPaneLayout = QGridLayout()
@@ -593,7 +593,7 @@ class Window(QDialog):
             patientDict['status'] = QLabel('Undefined')
             patientDict['rangeBin'] = QLabel('Undefined')
             patientDict['name'] = patientName
-            
+
             # Format text to make it attractive
             labelFont = QFont('Arial', 16)
             labelFont.setBold(True)
@@ -631,7 +631,7 @@ class Window(QDialog):
 
             # Add this patient to the overall vitals pane
             vitalsPaneLayout.addWidget(patientPane,i,0)
-        
+
         self.vitalsPane.setLayout(vitalsPaneLayout)
 
 
@@ -654,7 +654,7 @@ class Window(QDialog):
         self.scatter = gl.GLScatterPlotItem(size=5)
         self.scatter.setData(pos=np.zeros((1,3)))
         self.pcplot.addItem(self.scatter)
-        
+
         # Create box to represent EVM
         evmSizeX = 0.0625
         evmSizeZ = 0.125
@@ -673,7 +673,7 @@ class Window(QDialog):
         self.coordStr = []
         self.ellipsoids = []
 
-        
+
     def updateGraph(self, outputDict):
         pointCloud = None
         numPoints = 0
@@ -687,11 +687,11 @@ class Window(QDialog):
         vitalsDict = None
         self.useFilter = 0
         heights = None
-        
+
         # Point Cloud
         if ('pointCloud' in outputDict):
             pointCloud = outputDict['pointCloud']
-        
+
         # Number of Points
         if ('numDetectedPoints' in outputDict):
             numPoints = outputDict['numDetectedPoints']
@@ -703,23 +703,23 @@ class Window(QDialog):
         # Heights
         if ('heightData' in outputDict):
             heights = outputDict['heightData']
-    
+
         # Track index
         if ('trackIndexes' in outputDict):
             trackIndexs = outputDict['trackIndexes']
-            
+
         # Number of Tracks
         if ('numDetectedTracks' in outputDict):
             numTracks = outputDict['numDetectedTracks']
 
         # Frame number
         if ('frameNum' in outputDict):
-            self.frameNum = outputDict['frameNum'] 
+            self.frameNum = outputDict['frameNum']
 
         # Error
         if ('error' in outputDict):
             error = outputDict['error']
-            
+
         # Occupancy State Machine
         if ('occupancy' in outputDict):
             occupancyStates = outputDict['occupancy']
@@ -727,11 +727,11 @@ class Window(QDialog):
         # Vital Signs Info
         if ('vitals' in outputDict):
             vitalsDict = outputDict['vitals']
-            
+
         if (error != 0):
             print ("Parsing Error on frame: %d" % (self.frameNum))
             print ("\tError Number: %d" % (error))
-        
+
         # Update text for display
         self.numPointsDisplay.setText('Points: '+str(numPoints))
         self.numTargetsDisplay.setText('Targets: '+str(numTracks))
@@ -764,7 +764,7 @@ class Window(QDialog):
                 if ('occZone' in box['name']):
                     # Get index of the occupancy zone from the box name
                     occIdx = int(box['name'].lstrip(string.ascii_letters))
-                    # Zone unnoccupied 
+                    # Zone unnoccupied
                     if (occIdx >= len(occupancyStates) or not occupancyStates[occIdx]):
                         box['color'].setCurrentText('Green')
                     # Zone occupied
@@ -790,9 +790,9 @@ class Window(QDialog):
                 while (len(self.vitalsPatientData[patientId]['heartRate']) > NUM_HEART_RATES_FOR_MEDIAN):
                     self.vitalsPatientData[patientId]['heartRate'].pop(0)
                 medianHeartRate = statistics.median(self.vitalsPatientData[patientId]['heartRate'])
-                
+
                 # Check if the patient is holding their breath, and if there is a patient  detected at all
-                # TODO ensure vitals output is 0 
+                # TODO ensure vitals output is 0
                 if(float(vitalsDict['breathDeviation']) == 0 or numTracks == 0):
                     patientStatus = 'No Patient Detected'
                     breathRateText = "N/A"
@@ -812,7 +812,7 @@ class Window(QDialog):
                     else:
                         patientStatus = 'Holding Breath'
                         breathRateText = "N/A"
-                 
+
                 # Add heart rate waveform data for this packet to the graph
                 self.vitalsPatientData[patientId]['heartWaveform'].extend(vitalsDict['heartWaveform'])
                 while (len(self.vitalsPatientData[patientId]['heartWaveform']) > NUM_VITALS_FRAMES_IN_PLOT):
@@ -843,7 +843,7 @@ class Window(QDialog):
         for cstr in self.coordStr:
             cstr.setVisible(False)
 
-        #target heights        
+        #target heights
         if (heights is not None):
             if (len(heights) != len(tracks)):
                 print ("WARNING: number of heights does not match number of tracks")
@@ -892,7 +892,7 @@ class Window(QDialog):
         # If we have more point clouds than we need, delete the oldest ones
         while (len(self.previousClouds) > numPersistentFrames):
             self.previousClouds.pop(0)
-            
+
         # Since track indexes are delayed a frame, delay showing the current points by 1 frame
         if (len(self.previousClouds) > 1 and (self.configType.currentText() == DEMO_NAME_3DPC or self.configType.currentText() == DEMO_NAME_VITALS)):
             cumulativeCloud = np.concatenate(self.previousClouds[:-1])
@@ -956,7 +956,7 @@ class Window(QDialog):
         self.uart_thread.fin.connect(self.updateGraph)
         self.parseTimer = QTimer()
         self.parseTimer.setSingleShot(False)
-        self.parseTimer.timeout.connect(self.parseData)        
+        self.parseTimer.timeout.connect(self.parseData)
         try:
             uart = "COM"+ self.cliCom.text()
             data = "COM"+ self.dataCom.text()
@@ -980,7 +980,7 @@ class Window(QDialog):
         except Exception as e:
             print(e)
             print('No cfg file selected!')
-    
+
     def selectFile(self):
         try:
 
@@ -988,12 +988,12 @@ class Window(QDialog):
             configDirectory = current_dir
         except:
             configDirectory = ''
-        
+
         fd = QFileDialog()
         filt = "cfg(*.cfg)"
         filename = fd.getOpenFileName(directory=configDirectory,filter=filt)
         return filename[0]
-    
+
 
     # Add a boundary box to the boundary boxes tab
     def addBoundBox(self, name, minX=0, maxX=0, minY=0, maxY=0, minZ=0, maxZ=0):
@@ -1008,7 +1008,7 @@ class Window(QDialog):
         self.boundaryBoxes[boxIndex]['boundList'][3].setText(str(maxY))
         self.boundaryBoxes[boxIndex]['boundList'][4].setText(str(minZ))
         self.boundaryBoxes[boxIndex]['boundList'][5].setText(str(maxZ))
-        
+
         # Specific functionality for various types of boxes
         # Point boundary box
         if ('pointBounds' in name):
@@ -1044,7 +1044,7 @@ class Window(QDialog):
             self.boundaryBoxViz[boxIndex].setVisible(False)
         self.pcplot.addItem(self.boundaryBoxViz[boxIndex])
         self.onChangeBoundaryBox()
-        
+
 
     def parseCfg(self, fname):
         with open(fname, 'r') as cfg_file:
@@ -1082,7 +1082,7 @@ class Window(QDialog):
                         self.vitals[1]['pane'].setVisible(False)
                     # Initialize Vitals output dictionaries for each potential patient
                     for i in range (min(self.profile['maxTracks'], MAX_VITALS_PATIENTS)):
-                        # Initialize 
+                        # Initialize
                         patientDict = {}
                         patientDict ['id'] = i
                         patientDict ['rangeBin'] = 0
@@ -1166,7 +1166,7 @@ class Window(QDialog):
                     name = 'occZone' + str(zoneIdx)
 
                     self.addBoundBox(name, minX, maxX, minY, maxY, minZ, maxZ)
-                
+
             counter += 1
 
         self.profile['maxRange'] = self.profile['sampleRate']*1e3*0.9*3e8/(2*self.profile['slope']*1e12)
@@ -1180,7 +1180,7 @@ class Window(QDialog):
         self.configTable.setItem(2,1,QTableWidgetItem(str(rangeRes)[:5]))
         self.configTable.setItem(3,1,QTableWidgetItem(str(maxVelocity)[:5]))
         self.configTable.setItem(4,1,QTableWidgetItem(str(velocityRes)[:5]))
-        
+
         # Update sensor position
         self.az_tilt.setText(str(self.profile['az_tilt']))
         self.elev_tilt.setText(str(self.profile['elev_tilt']))
@@ -1192,8 +1192,8 @@ class Window(QDialog):
             if (self.configType.currentText() != "Replay"):
                 self.parser.sendCfg(self.cfg)
                 self.configSent = 1
-                self.parseTimer.start(self.frameTime) # need this line 
-                
+                self.parseTimer.start(self.frameTime) # need this line
+
         except Exception as e:
             print(e)
             print ('No cfg file selected!')
@@ -1207,7 +1207,7 @@ class Window(QDialog):
                 'Then click Start without Send Configuration.')
             return
         self.configSent = 1
-        self.parseTimer.start(self.frameTime) # need this line 
+        self.parseTimer.start(self.frameTime) # need this line
 
     def parseData(self):
         if not self.uart_thread.isRunning():

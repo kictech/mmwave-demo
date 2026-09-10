@@ -128,14 +128,14 @@ def getSquareLines(xl,yL,xr,yr,z):
 # Tilt angles are in degrees
 def eulerRot(x, y, z, elevTilt, aziTilt):
     # Convert to radians
-    elevTilt = np.deg2rad(elevTilt) 
+    elevTilt = np.deg2rad(elevTilt)
     aziTilt = np.deg2rad(aziTilt)
 
     elevAziRotMatrix = np.matrix([  [  math.cos(aziTilt),  math.cos(elevTilt)*math.sin(aziTilt), math.sin(elevTilt)*math.sin(aziTilt)],
                                     [ -math.sin(aziTilt),  math.cos(elevTilt)*math.cos(aziTilt), math.sin(elevTilt)*math.cos(aziTilt)],
                                     [                  0,                   -math.sin(elevTilt),                   math.cos(elevTilt)],
                                 ])
-    
+
     # Old matrix for only Elevation tilt
     # elevRotMatrix = np.matrix([ [ 1,                   0,                  0 ],
     #                             [ 0,  math.cos(elevTilt), math.sin(elevTilt) ],
